@@ -27,6 +27,7 @@ public class MyStack implements Stackable{
         if(!isFull()) {
             top++;
             stackArray[top] = elem;
+            result = true;
         }
         return result;
     }
@@ -43,6 +44,11 @@ public class MyStack implements Stackable{
 
     @Override
     public int readTop() {
-        return stackArray[top];
+        if(!isEmpty()) {
+            return stackArray[top];
+        }
+        else {
+            return Integer.MAX_VALUE;
+        }
     }
 }
