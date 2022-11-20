@@ -1,6 +1,8 @@
 package org.example;
 
-public class MyStack implements Stackable{
+import java.util.Optional;
+
+public class MyStack implements Stackable {
     private int size;
     private int[] stackArray;
     private int top;
@@ -22,33 +24,39 @@ public class MyStack implements Stackable{
     }
 
     @Override
-    public boolean push(int elem) {
-        boolean result = false;
-        if(!isFull()) {
-            top++;
-            stackArray[top] = elem;
-            result = true;
+    public boolean push(int elem) throws MyStackOverflowException {
+        if (isFull()) {
+            throw new MyStackOverflowException();
         }
-        return result;
+        top++;
+        stackArray[top] = elem;
+        return true;
     }
 
     @Override
-    public int pop() {
-        if(!isEmpty()) {
-            return stackArray[top--];
+    public int pop() throws MyStackEmptyException {
+        if (isEmpty()) {
+            throw new MyStackEmptyException();
         }
-        else {
-            return Integer.MAX_VALUE;
-        }
+        return stackArray[top--];
     }
 
     @Override
-    public int readTop() {
-        if(!isEmpty()) {
-            return stackArray[top];
+    public int readTop() throws MyStackEmptyException {
+        if (isEmpty()) {
+            throw new MyStackEmptyException();
         }
-        else {
-            return Integer.MAX_VALUE;
+        return stackArray[top];
+    }
+
+    public Optional<Integer> popOptional() {
+        Optional<Integer> optional;
+        if (isEmpty()) {
+            optional = Optional.empty();
+        } else {
+            optional = Optional.of(stackArray[top]);
         }
+
+        return optional;
     }
 }
